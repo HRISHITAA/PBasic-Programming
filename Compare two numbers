@@ -1,0 +1,44 @@
+' {$STAMP BS2}
+' {$PBASIC 2.5}
+' Program to compare two numbers
+' Variables declared as bytes to store values from -127 to 127
+Num1 VAR Byte
+Num2 VAR Byte
+
+' Display prompt for first number
+DEBUG "Enter first number (-127 to 127): "
+DEBUGIN SDEC Num1
+
+' Display prompt for second number
+DEBUG "Enter second number (-127 to 127): "
+DEBUGIN SDEC Num2
+
+' Check if Num1 is negative
+IF Num1 AND 128 THEN    ' Num1 is negative
+  IF Num2 AND 128 THEN             ' Num2 is negative
+    IF Num1 AND 127 > Num2 AND 127 THEN
+      DEBUG "Num1 < Num2"
+    ELSE
+      DEBUG "Num1 > Num2"
+    ENDIF
+  ELSE
+    ' Num1 is negative, Num2 is positive, Num2 is greater
+    DEBUG "Num1 < Num2"
+  ENDIF
+ELSE
+  ' Num1 is positive
+  IF Num2 AND 128 THEN
+    ' Num1 is positive, Num2 is negative, Num1 is greater
+    DEBUG "Num1 > Num2"
+  ELSE
+    ' Both numbers are positive, compare directly
+    IF Num1 > Num2 THEN
+      DEBUG "Num1 > Num2"
+    ELSEIF Num1 < Num2 THEN
+      DEBUG "Num1 < Num2"
+    ELSE
+      DEBUG "Num1 = Num2"
+    ENDIF
+  ENDIF
+ENDIF
+END
