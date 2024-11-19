@@ -1,0 +1,48 @@
+'{$STAMP BS2}
+'{$PBASIC 2.5}
+
+x              VAR     Word
+y              VAR     Word
+planeHeight    VAR     Byte
+planeWidth     VAR     Byte
+cursorX        VAR     Byte    ' Calculated cursor X position
+cursorY        VAR     Byte    ' Calculated cursor Y position
+
+
+DEBUG CLS
+DEBUG "     3|      ", 13
+DEBUG "     2|      ", 13
+DEBUG "     1|      ", 13
+DEBUG "------+------", 13
+DEBUG "-3-2-1|1 2 3", 13
+DEBUG "    -2|      ", 13
+DEBUG "    -3|      ", 13
+
+main:
+
+DEBUG"Type X coordinate: "
+DEBUGIN SDEC x
+DEBUG "Type Y coordinate: "
+DEBUGIN SDEC y
+
+' Set plane dimensions
+planeWidth = 12
+planeHeight = 7
+
+' Calculate cursor X position
+' For x=-3: cursorX should be 0
+' For x=3:  cursorX should be 11
+cursorX = -x + 3   ' Shift to positive range (0-6)
+IF x > 0 THEN     ' Add extra space for positive numbers
+  cursorX =  x +6
+ENDIF
+
+' Calculate cursor Y position
+' For y=3:  cursorY should be 0
+' For y=-3: cursorY should be 6
+cursorY = 3 - y   ' Invert and shift Y coordinate
+
+' Position cursor and print asterisk
+DEBUG CRSRXY, cursorX, cursorY, "*"
+
+END
