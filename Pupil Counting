@@ -1,0 +1,57 @@
+' {$STAMP BS2}
+' {$PBASIC 2.5}
+
+' Define pins
+EntryButton PIN 0    ' Entry button
+ExitButton  PIN 15   ' Exit button
+
+' Variables for counts and button states
+entryCount  VAR     Word ' Total entries
+exitCount   VAR     Word ' Total exits
+countDiff   VAR     Word ' Difference between counts
+entryState  VAR     Bit  ' Current state of entry button
+exitState   VAR     Bit  ' Current state of exit button
+lastEntry   VAR     Bit  ' Previous state of entry button
+lastExit    VAR     Bit  ' Previous state of exit button
+
+' Initialize
+entryCount = 0
+exitCount = 0
+
+Main:
+  ' Read button states
+  entryState = IN0
+  exitState = IN15
+
+  ' Check for entry button press (transition from high to low)
+  DO
+    IF IN0 = 0 THEN
+      PAUSE 1000
+      entryCount = entryCount + 1
+      IF entryState > 225 THEN entryState = 0
+      DEBUG "Entry button presses: ", DEC entryCount, CR
+    ENDIF
+  LOOP UNTIL IN15 = 0
+  PAUSE 1000
+
+  ' Check for exit button press (transition from high to low)
+  DO
+    IF IN15 = 0 THEN
+      PAUSE 1000
+      exitCount = exitCount + 1
+      IF exitState > 225 THEN exitState = 0
+      DEBUG "Exit button presses: ", DEC exitCount, CR    ' Fixed this line
+    ENDIF
+  LOOP UNTIL IN0 = 0
+  PAUSE 200
+
+  ' Calculate and display difference
+  IF entryCount = exitCount THEN
+    DEBUG "Equal number of entries and exits =",DEC exitCount, CR
+  ELSEIF entryCount > exitCount THEN
+    countDiff = entryCount - exitCount
+    DEBUG DEC countDiff, " more entries than exits ",CR
+  ELSE
+    countDiff = exitCount - entryCount
+    DEBUG "ERROR= ", DEC countDiff, " more exits than entries", CR
+  ENDIF
