@@ -6,15 +6,15 @@ This repository contains solutions to four PBasic programming challenges focusin
  Write and implement a PBasic program to do the following. Using the debugin command, have a user enter  two  integers  (Num1  and  Num2)  in  the  range  of  -127  to  127.  Accept  and  store  the  input  in  two  Byte-sized  variables and display the entered numbers with correct numerical value and sign. Next, your PBasic program should correctly   establish   and   indicate   the   ordering   of   Num1   and   Num2,   i.e.,   Num1>Num2,   Num1<Num2,   or   Num1=Num2. 
 
 ## Problem 2: Coordinate System Display
+Using  the  debug  command,  graphically  display  the  following  coordinate  system  within  the  debug  terminal.      
 
-  Using  the  debug  command,  graphically  display  the  following  coordinate  system  within  the  debug  terminal.      
-       3|            
-       2|            
-       1|       
-  ------+------ <br/>
-  -3-2-1| 1 2 3    
-      -2|           
-      -3|       
+         3|            
+         2|            
+         1|    
+    ------+------ <br/>
+    -3-2-1| 1 2 3    
+        -2|           
+        -3|       
   Now,  write  a  program  that  does  appropriate  scaling  and  offset  to  display  an  asterisk  at  a  user-dictated  (x,y)  coordinate (e.g., (2,2) or (1,3)). Note the extra space between characters on the positive side of the horizontal axis
 ## Problem 3: Cold and Hot Game
 
