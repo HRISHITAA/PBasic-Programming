@@ -11,7 +11,7 @@ This repository contains solutions to four PBasic programming challenges focusin
        3|            
        2|            
        1|       
-  ------+------ 
+  ------+------ <br/>
   -3-2-1| 1 2 3    
       -2|           
       -3|       
