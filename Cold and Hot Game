@@ -1,0 +1,122 @@
+'{$STAMP BS2}
+'{$PBASIC 2.5}
+' Pin definitions
+ColdLED     PIN     0       ' Blue LED for too low
+WinLED      PIN     1       ' Green LED for win
+HotLED      PIN     2       ' Red LED for too high
+Btn1        PIN     3       ' Ones digit button
+Btn2        PIN     4       ' Tens digit button
+
+' Variables
+secretNumber    VAR     Byte    ' Number to guess (0-99)
+guess          VAR     Byte    ' Player's current guess
+tens           VAR     Byte    ' Tens digit of guess
+ones           VAR     Byte    ' Ones digit of guess
+chances        VAR     Byte    ' Number of remaining guesses
+b1State        VAR     Bit     ' Current state of button 1
+b2State        VAR     Bit     ' Current state of button 2
+prevB1State    VAR     Bit     ' Previous state of button 1
+prevB2State    VAR     Bit     ' Previous state of button 2
+
+' Initialize
+DEBUG CLS
+GOSUB GenerateSecretNumber
+chances = 3
+
+Main:
+  DO
+    ' Get user guess
+    GOSUB GetUserGuess
+
+    ' Check guess
+    IF guess < secretNumber THEN
+      HIGH ColdLED
+      LOW WinLED
+      LOW HotLED
+      DEBUG CR, "Cold (too low)"
+      PAUSE 1000
+      LOW ColdLED
+    ELSEIF guess > secretNumber THEN
+      LOW ColdLED
+      LOW WinLED
+      HIGH HotLED
+      DEBUG CR, "Hot (too high)"
+      PAUSE 1000
+      LOW HotLED
+    ELSE
+      LOW ColdLED
+      HIGH WinLED
+      LOW HotLED
+      DEBUG CR, "Win! You guessed correctly!"
+      'GOTO GameOver
+    ENDIF
+
+    chances = chances - 1
+    DEBUG CR, "Chances left: ", DEC chances
+
+    IF chances = 0 THEN
+      DEBUG CR, "Game over! The number was: ", DEC secretNumber
+      GOTO GameOver
+    ENDIF
+  LOOP
+
+GameOver:
+  ' Blink all LEDs
+  FOR b1State = 1 TO 5
+    HIGH ColdLED
+    HIGH WinLED
+    HIGH HotLED
+    PAUSE 200
+    LOW ColdLED
+    LOW WinLED
+    LOW HotLED
+    PAUSE 200
+  NEXT
+  END
+
+GetUserGuess:
+  tens = 0
+  ones = 0
+  DEBUG CR, "Enter your guess (0-99):"
+  DEBUG CR, "Press B2 for tens, B1 for ones"
+  DEBUG CR, "Press both buttons to confirm"
+
+  prevB1State = 1
+  prevB2State = 1
+
+  DO
+    b1State = IN3
+    b2State = IN4
+
+    ' Check for tens button press
+    IF (b2State = 0) AND (prevB2State = 1) THEN    ' Changed logic to detect press
+      tens = tens + 1
+      IF tens > 9 THEN tens = 0
+      DEBUG CR, "Tens: ", DEC tens
+    ENDIF
+
+    ' Check for ones button press
+    IF (b1State = 0) AND (prevB1State = 1) THEN    ' Changed logic to detect press
+      ones = ones + 1
+      IF ones > 9 THEN ones = 0
+      DEBUG CR, "Ones: ", DEC ones
+    ENDIF
+
+    prevB1State = b1State
+    prevB2State = b2State
+    PAUSE 200  ' Reduced debounce delay
+  LOOP UNTIL (IN3 = 0) AND (IN4 = 0)  ' Exit when both buttons are pressed
+
+  guess = tens * 10 + ones
+  DEBUG CR, "Your guess: ", DEC guess
+
+  ' Wait for button release
+  DO
+  LOOP UNTIL (IN3 = 1) AND (IN4 = 1)
+  RETURN
+
+GenerateSecretNumber:
+  ' You should implement a proper random number generator here
+  ' For testing, using a fixed number
+  secretNumber = 12    ' Changed to a different number for testing
+  RETURN
