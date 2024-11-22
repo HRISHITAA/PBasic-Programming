@@ -1,72 +1,41 @@
 ' {$STAMP BS2}
 ' {$PBASIC 2.5}
 
-' Variables for system
-errorState VAR Byte    ' Stores the current error state (0-7)
-buttonPress VAR Byte   ' Counter for button presses
-debounceTime CON 50    ' Debouncing time in ms
+' Project 2 - Problem 1
 
-' Pins for LEDs and Button
-RedLed    PIN 13        ' Red LED
-GreenLed  PIN 12       ' Green LED (corrected from Blue)
-YellowLed PIN 11        ' Yellow LED
-Button_   PIN 3        ' Push Button (Active Low)
+' Initializing variables
+Number VAR Byte
+reset VAR Bit
 
-PAUSE 100             ' Wait for system stabilization
+DIRL = %11111111  ' Set pins 0-8 to output
+OUTL = %11111111
 
-' Debugging Output to show current error state and individual bits
-errorState = 7
-DEBUG "Error State: ", BIN errorState, CR
-DEBUG "BIT0: ", BIN errorState.BIT0, CR
-DEBUG "BIT1: ", BIN errorState.BIT1, CR
-DEBUG "BIT2: ", BIN errorState.BIT2, CR
 
-Main:
-  'RANDOM errorState    ' Generate a random error state
-  'errorState = errorState // 8 ' Ensure error state is between 0 and 7
-  buttonPress = 0
+Display:
+  Number = 0
+  OUTL = %11111111
+
+  DEBUG "Enter a number in range (-127, 127): " , 13
+  DEBUGIN SDEC3 Number
+  DEBUG 13
+
+  IF Number.BIT7=1 THEN   'If Number is negative
+    DEBUG "Number entered is ", SDEC3 Number-256, 13
+  ELSE
+    DEBUG "Number entered is ", DEC3 Number, 13
+  ENDIF
+
+  DEBUG "Binary represntation is: ", BIN Number, 13
+
+  OUTL = ~Number ' Set output pins to sink corresponding to the bit of the number
+
+  DEBUG "Enter 1 to reset" , 13
+  DEBUGIN BIN reset
+  DEBUG 13
+
   DO
-    ' Control the LEDs based on the errorState bits
-    IF errorState.BIT2 = 0 THEN
-      LOW RedLed
-    ELSE
-      HIGH RedLed
-    ENDIF
-
-    IF errorState.BIT1 = 0 THEN
-      LOW GreenLed        ' Corrected from BlueLed
-    ELSE
-      HIGH GreenLed       ' Corrected from BlueLed
-    ENDIF
-
-    IF errorState.BIT0 = 0 THEN
-      LOW YellowLed
-    ELSE
-      HIGH YellowLed
-    ENDIF
-
-    ' Check for button press (Active Low)
-    IF IN3 = 0 THEN       ' Button pressed (pin 3)
-      PAUSE debounceTime   ' Debounce to avoid false readings
-      buttonPress = buttonPress + 1
-      DEBUG "Button Pressed! Count: ", DEC buttonPress, CR
-
-      ' If buttonPress matches errorState, clear the error
-      IF buttonPress = errorState THEN
-        DEBUG "Error Resolved!", CR
-        GOSUB ClearError
-      ENDIF
-
-      ' Wait until button is released
-      DO : LOOP UNTIL IN3 = 1
-    ENDIF
+  IF reset = 1 THEN
+    DEBUG CLS
+    GOTO Display
+  ENDIF
   LOOP
-
-ClearError:
-  DEBUG "Clearing Error State...", CR
-  LOW RedLed
-  LOW GreenLed
-  LOW YellowLed
-  errorState = 0
-  buttonPress = 0
-  RETURN
