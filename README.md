@@ -48,3 +48,65 @@ Individuals will enter and exit the school from two separate gates. A pressure-s
 1. Continuous monitoring of entry/exit points
 2. Real-time count updates
 3. Display of current occupancy
+
+## Problem 5: Potentiometer Voltage Measurement
+
+### Objective
+Compare voltage measurements from a potentiometer using both ADC and direct interfacing methods.
+
+### Components Required
+- Basic Stamp 2 microcontroller
+- Potentiometer (10kΩ recommended)
+- Analog to Digital Converter
+- Connecting wires
+
+## Problem 6: LED Transistor Control
+
+### Description
+Two-part exercise implementing transistor-based LED control:
+1. Digital control via BS2 pin
+2. Analog control via potentiometer
+
+### Requirements
+Part 1:
+- Interface LED with NPN transistor (2N3904)
+- Control LED state using BS2 pin P0
+- Implement appropriate resistor values
+
+Part 2:
+- Replace BS2 control with potentiometer
+- Connect potentiometer between Vdd and Vss
+- Document LED behavior changes
+
+## Problem 7: Angular Position Sensor
+
+### Description
+Create an angular position measurement system using two methods:
+1. Potentiometer in RC circuit
+2. Potentiometer in 555-timer circuit
+
+### Requirements
+- Mount potentiometer on calibrated display (0-360°)
+- Create dial indicator system
+- Implement BS2 program using RCTime command
+- Calibrate for accurate angle reporting
+- Select appropriate C and R2 values for both methods
+
+## Problem 8: 555 Timer LED Control
+
+### Description
+Implement controllable LED blinking using 555 timer circuit with potentiometer adjustment.
+
+### Requirements
+- Control LED blinking via BS2 pin P1
+- Measure blinking cycle durations using PULSIN
+- Calculate and display blinking frequency
+- Document theoretical timing when pot = 0Ω
+
+### Expected Measurements
+- LED ON duration
+- LED OFF duration
+- Blinking frequency
+- Theoretical timing calculations
+
+
