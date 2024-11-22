@@ -1,0 +1,10 @@
+' {$STAMP BS2}
+' {$PBASIC 2.5}
+
+' Project 2 - Problem 2
+  DO
+HIGH 0 ' Set Pin 6 and 7 to output and rest of the pins including Pin 0 and 1 to Input
+ PAUSE 100
+ LOW 0
+ PAUSE 100
+ LOOP
